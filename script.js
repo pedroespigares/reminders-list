@@ -20,6 +20,7 @@ $(document).ready(function() {
         if (e.keyCode == 13) {
             addToContainer();
             total ++;
+            contadorNotCompleted ++;
             $("#pendientes").text(`${contadorNotCompleted} pendientes de un total de ${total}`);
         }
     });
@@ -32,6 +33,14 @@ $(document).ready(function() {
         });
         reminders.splice($(this).parent().parent().index(), 1);
         localStorage.reminders = JSON.stringify(reminders);
+        total --;
+        contadorNotCompleted --;
+
+        if(contadorNotCompleted > 0){
+            $("#pendientes").text(`${contadorNotCompleted} pendientes de un total de ${total}`);
+        } else {
+            $("#pendientes").text(`0 pendientes de un total de ${total}`);
+        }
     });
 
 
@@ -72,15 +81,24 @@ $(document).ready(function() {
     // Para cambiar borrar todos los recordatorios completados
 
     $("#deleteAll").click(function() {
+        var contadorRemoved = 0;
         $(".fa-check-circle").parent().parent().hide("normal", function() {
             $(".fa-check-circle").parent().parent().remove();
             for (var i = 0; i < reminders.length; i++) {
                 if (reminders[i].completed) {
+                    contadorRemoved ++;
                     reminders.splice(i, 1);
                     i--;
                 }
             }
+            total -= Math.floor(contadorRemoved/2);
             localStorage.reminders = JSON.stringify(reminders);
+
+            if(contadorNotCompleted > 0){
+                $("#pendientes").text(`${contadorNotCompleted} pendientes de un total de ${total}`);
+            } else {
+                $("#pendientes").text(`0 pendientes de un total de ${total}`);
+            }
         });
     });
 
@@ -100,6 +118,19 @@ $(document).ready(function() {
     changePriority("medium");
     changePriority("high");
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function addToContainer(){
