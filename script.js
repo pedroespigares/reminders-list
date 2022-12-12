@@ -185,7 +185,7 @@ function writeLocalStorage() {
             }
         }
         container.append(newReminder);
-        newReminder.show('normal');
+        newReminder.show(0);
     }
 }
 
