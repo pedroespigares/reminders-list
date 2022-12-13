@@ -1,9 +1,11 @@
 // Si existe el local storage, lo metemos en el array, si no, lo creamos vacío
 
+var reminders;
+
 if(localStorage.reminders != null)
-    var reminders = JSON.parse(localStorage.getItem('reminders'))
+    reminders = JSON.parse(localStorage.getItem('reminders'))
 else
-    var reminders = [];
+    reminders = [];
 
 $(document).ready(function() {
 
@@ -11,7 +13,7 @@ $(document).ready(function() {
     var total = reminders.length;
 
     if (localStorage.getItem('reminders') != null) {
-        writeLocalStorage();
+        writeLocalStorage(reminders);
     }
 
     // Para darle al enter y que añada el recordatorio
@@ -159,8 +161,7 @@ function addToContainer(){
 }
 
 
-function writeLocalStorage() {
-    var reminders = JSON.parse(localStorage.getItem('reminders'));
+function writeLocalStorage(reminders) {
     var container = $('#remindersContainer');
 
     for (var i = 0; i < reminders.length; i++) {
@@ -217,5 +218,5 @@ function changePriority(priority){
 
 function refreshView(){
     $("#remindersContainer").empty();
-    writeLocalStorage();
+    writeLocalStorage(reminders);
 }
